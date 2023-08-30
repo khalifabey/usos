@@ -30,7 +30,7 @@ class _CameraScreenState extends State<CameraScreen>
   // Initial values
   bool _isCameraInitialized = false;
   bool _isCameraPermissionGranted = false;
-  bool _isRearCameraSelected = true;
+  bool _isRearCameraSelected = false;
   bool _isVideoCameraSelected = false;
   bool _isRecordingInProgress = false;
   double _minAvailableExposureOffset = 0.0;
@@ -47,7 +47,7 @@ class _CameraScreenState extends State<CameraScreen>
 
   final resolutionPresets = ResolutionPreset.values;
 
-  ResolutionPreset currentResolutionPreset = ResolutionPreset.high;
+  ResolutionPreset currentResolutionPreset = ResolutionPreset.medium;
 
   getPermissionStatus() async {
     await Permission.camera.request();
@@ -298,8 +298,8 @@ class _CameraScreenState extends State<CameraScreen>
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.black,
-        body: _isCameraPermissionGranted
-            ? _isCameraInitialized
+        body:
+             _isCameraInitialized
             ? Column(
           children: [
             AspectRatio(
@@ -337,51 +337,7 @@ class _CameraScreenState extends State<CameraScreen>
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.black87,
-                              borderRadius:
-                              BorderRadius.circular(10.0),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                left: 8.0,
-                                right: 8.0,
-                              ),
-                              child: DropdownButton<ResolutionPreset>(
-                                dropdownColor: Colors.black87,
-                                underline: Container(),
-                                value: currentResolutionPreset,
-                                items: [
-                                  for (ResolutionPreset preset
-                                  in resolutionPresets)
-                                    DropdownMenuItem(
-                                      child: Text(
-                                        preset
-                                            .toString()
-                                            .split('.')[1]
-                                            .toUpperCase(),
-                                        style: TextStyle(
-                                            color: Colors.white),
-                                      ),
-                                      value: preset,
-                                    )
-                                ],
-                                onChanged: (value) {
-                                  setState(() {
-                                    currentResolutionPreset = value!;
-                                    _isCameraInitialized = false;
-                                  });
-                                  onNewCameraSelected(
-                                      controller!.description);
-                                },
-                                hint: Text("Select item"),
-                              ),
-                            ),
-                          ),
-                        ),
+
                         // Spacer(),
                         Padding(
                           padding: const EdgeInsets.only(
@@ -470,60 +426,7 @@ class _CameraScreenState extends State<CameraScreen>
                           mainAxisAlignment:
                           MainAxisAlignment.spaceBetween,
                           children: [
-                            InkWell(
-                              onTap: _isRecordingInProgress
-                                  ? () async {
-                                if (controller!
-                                    .value.isRecordingPaused) {
-                                  await resumeVideoRecording();
-                                } else {
-                                  await pauseVideoRecording();
-                                }
-                              }
-                                  : () {
-                                setState(() {
-                                  _isCameraInitialized = false;
-                                });
-                                onNewCameraSelected(cameras[
-                                _isRearCameraSelected
-                                    ? 1
-                                    : 0]);
-                                setState(() {
-                                  _isRearCameraSelected =
-                                  !_isRearCameraSelected;
-                                });
-                              },
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.circle,
-                                    color: Colors.black38,
-                                    size: 60,
-                                  ),
-                                  _isRecordingInProgress
-                                      ? controller!
-                                      .value.isRecordingPaused
-                                      ? Icon(
-                                    Icons.play_arrow,
-                                    color: Colors.white,
-                                    size: 30,
-                                  )
-                                      : Icon(
-                                    Icons.pause,
-                                    color: Colors.white,
-                                    size: 30,
-                                  )
-                                      : Icon(
-                                    _isRearCameraSelected
-                                        ? Icons.camera_front
-                                        : Icons.camera_rear,
-                                    color: Colors.white,
-                                    size: 30,
-                                  ),
-                                ],
-                              ),
-                            ),
+
                             InkWell(
                               onTap: _isVideoCameraSelected
                                   ? () async {
@@ -608,58 +511,7 @@ class _CameraScreenState extends State<CameraScreen>
                                 ],
                               ),
                             ),
-                            InkWell(
-                              onTap: _imageFile != null ||
-                                  _videoFile != null
-                                  ? () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        PreviewScreen(
-                                          imageFile: _imageFile!,
-                                          fileList: allFileList,
-                                        ),
-                                  ),
-                                );
-                              }
-                                  : null,
-                              child: Container(
-                                width: 60,
-                                height: 60,
-                                decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius:
-                                  BorderRadius.circular(10.0),
-                                  border: Border.all(
-                                    color: Colors.white,
-                                    width: 2,
-                                  ),
-                                  image: _imageFile != null
-                                      ? DecorationImage(
-                                    image:
-                                    FileImage(_imageFile!),
-                                    fit: BoxFit.cover,
-                                  )
-                                      : null,
-                                ),
-                                child: videoController != null &&
-                                    videoController!
-                                        .value.isInitialized
-                                    ? ClipRRect(
-                                  borderRadius:
-                                  BorderRadius.circular(
-                                      8.0),
-                                  child: AspectRatio(
-                                    aspectRatio:
-                                    videoController!
-                                        .value.aspectRatio,
-                                    child: VideoPlayer(
-                                        videoController!),
-                                  ),
-                                )
-                                    : Container(),
-                              ),
-                            ),
+
                           ],
                         ),
                       ],
@@ -689,8 +541,7 @@ class _CameraScreenState extends State<CameraScreen>
                                     : () {
                                   if (_isVideoCameraSelected) {
                                     setState(() {
-                                      _isVideoCameraSelected =
-                                      false;
+                                      _isVideoCameraSelected = false;
                                     });
                                   }
                                 },
@@ -698,8 +549,7 @@ class _CameraScreenState extends State<CameraScreen>
                                   primary: _isVideoCameraSelected
                                       ? Colors.black54
                                       : Colors.black,
-                                  backgroundColor:
-                                  _isVideoCameraSelected
+                                  backgroundColor: _isVideoCameraSelected
                                       ? Colors.white30
                                       : Colors.white,
                                 ),
@@ -723,8 +573,7 @@ class _CameraScreenState extends State<CameraScreen>
                                   primary: _isVideoCameraSelected
                                       ? Colors.black
                                       : Colors.black54,
-                                  backgroundColor:
-                                  _isVideoCameraSelected
+                                  backgroundColor: _isVideoCameraSelected
                                       ? Colors.white
                                       : Colors.white30,
                                 ),
@@ -736,8 +585,8 @@ class _CameraScreenState extends State<CameraScreen>
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                          16.0, 8.0, 16.0, 8.0),
+                      padding:
+                      const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
                       child: Row(
                         mainAxisAlignment:
                         MainAxisAlignment.spaceBetween,
@@ -812,7 +661,30 @@ class _CameraScreenState extends State<CameraScreen>
                           ),
                         ],
                       ),
-                    )
+
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          InkWell(
+                            onTap: _isVideoCameraSelected
+                                ? null
+                                : () async {
+                              // ... Take picture logic ...
+                            },
+                            child: Icon(
+                              Icons.camera_alt,
+                              color: _isVideoCameraSelected
+                                  ? Colors.white38
+                                  : Colors.white,
+                              size: 40, // Adjust the size as needed
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -825,35 +697,7 @@ class _CameraScreenState extends State<CameraScreen>
             style: TextStyle(color: Colors.white),
           ),
         )
-            : Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(),
-            Text(
-              'Permission denied',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-              ),
-            ),
-            SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: () {
-                getPermissionStatus();
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  'Give permission',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+
       ),
     );
   }
