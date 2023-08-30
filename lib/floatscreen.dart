@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'camerabutton.dart'; // Import your CameraButton class
 import 'package:camera/camera.dart'; // Import the camera package
+import 'package:flutter_svg/flutter_svg.dart';
 
 class FloatingScreen extends StatefulWidget {
   @override
@@ -11,7 +13,7 @@ class _FloatingScreenState extends State<FloatingScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => CameraButton()),
@@ -22,13 +24,14 @@ class _FloatingScreenState extends State<FloatingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green,
+      backgroundColor: Color(0xFFAACC00),
       body: Center(
-        child: Text(
-          'Floating Screen',
-          style: TextStyle(fontSize: 24, color: Colors.white),
-        ),
-      ),
-    );
+        child: Container(
+          width: 150,
+          height: 60,
+           child: Image.asset('lib/assets/yousos.png'),
+         )
+      )
+   );
   }
 }
