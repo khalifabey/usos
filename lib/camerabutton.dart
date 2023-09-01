@@ -11,18 +11,19 @@ class CameraButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children:[
-          Container(
+            Container(
             decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(100)),
                 color: Color(0x7faacc00)),
             height: 200,
             width: 500,
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(290, 165, 4, 2),
-              child: Text("KIRIBIS", style: TextStyle(color: Color(0xFFAACC00), fontSize: 25.0, fontWeight: FontWeight.w900,),
+              child: const Padding(
+              padding: EdgeInsets.fromLTRB(280, 165, 4, 2),
+                child: Text("KIRIBIS", style: TextStyle(color: Color(0xFFAACC00), fontSize: 25.0, fontWeight: FontWeight.w900,),
             ),
           ),
+              
         ),
           SizedBox(height: 30),
           Container(
