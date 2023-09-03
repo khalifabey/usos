@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:usos/kiribis.dart';
+import 'DisplayPictureScreen.dart';
 import 'floatscreen.dart'; // Import the FloatingScreen class
 import 'package:camera/camera.dart';
+
+import 'nextpage.dart';
 
 List<CameraDescription> cameras = [];
 
@@ -21,7 +24,7 @@ class FigmaToCodeApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: const Color.fromARGB(255, 18, 32, 47),
+        scaffoldBackgroundColor: const Color.fromARGB(0, 30, 30, 30),
       ),
       debugShowCheckedModeBanner: false,
       home: kribis(),

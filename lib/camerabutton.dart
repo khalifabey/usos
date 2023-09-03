@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart'; // Import the camera package
 import 'camerascreen.dart';
+import 'nextpage.dart';
 
 class CameraButton extends StatelessWidget {
   @override
@@ -16,31 +17,68 @@ class CameraButton extends StatelessWidget {
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(100)),
                 color: Color(0x7faacc00)),
-            height: 200,
+            height: 150,
             width: 500,
-              child: const Padding(
-              padding: EdgeInsets.fromLTRB(280, 165, 4, 2),
-                child: Text("KIRIBIS", style: TextStyle(color: Color(0xFFAACC00), fontSize: 25.0, fontWeight: FontWeight.w900,),
-            ),
-          ),
-              
-        ),
+                   child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Align(
+                      alignment: Alignment(-1.0, -0.3),
+                      child: Image.asset(
+                        'lib/assets/pq.png',
+                        height: 140,
+                        width: 140,
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(90, 115, 10, 2),
+                      child: Text("KIRIBIS", style: TextStyle(color: Color(0xFFAACC00), fontSize: 25.0, fontWeight: FontWeight.w900,),
+                      ),
+                    ),
+
+    ],
+              ),
+    ),
+
           SizedBox(height: 30),
           Container(
             decoration: BoxDecoration(
                 color: Color(0xff1E1E1E),
                 border: Border.all(
                     color: Color(0xFFAACC00),
-                    width: 3.0),
+                    width: 2.0),
                 borderRadius: BorderRadius.all(
                     Radius.circular(20.0)),
             ),
-            height: 500,
+            height: 550,
             width: 350,
             child: Padding(
-            padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
-             child: Text("Prendre une photo de la voiture fautive. Assurez-vous que toute la voiture et les numéros sur la plaque sont visibles."),
-          ),
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "\n Prendre une photo de la voiture fautive. \n \n Assurez-vous que toute la voiture et les numéros sur la plaque sont visibles.",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(200, 240, 4, 2),
+                  child: Image.asset(
+                    'lib/assets/img.png',
+                  ),
+              ),
+                  SizedBox(
+                    width: 15,
+                  ),
+                ],
+              ),
+            ),
           ),
           SizedBox(height: 30),
           Container(
@@ -62,7 +100,7 @@ class CameraButton extends StatelessWidget {
                   final cameras = await availableCameras();
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CameraScreen()),
+                    MaterialPageRoute(builder: (context) => NextPage()),
                   );
                 },
                 child: Icon(Icons.camera_alt, color: Colors.black54, size: 35),
