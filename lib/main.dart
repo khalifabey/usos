@@ -3,6 +3,7 @@ import 'package:usos/kiribis.dart';
 import 'DisplayPictureScreen.dart';
 import 'floatscreen.dart'; // Import the FloatingScreen class
 import 'package:camera/camera.dart';
+import 'thankyou.dart';
 
 import 'nextpage.dart';
 

@@ -6,14 +6,16 @@ class ThankYouPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Thank You')),
+      backgroundColor: Color(0xff1E1E1E),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Thank you for your trust!',
-              style: TextStyle(fontSize: 24),
+              'Infraction envoyée',
+              style: TextStyle(fontSize: 25,
+                color: Color(0xFFAACC00)
+              ),
             ),
             SizedBox(height: 20),
             ElevatedButton(
@@ -24,7 +26,14 @@ class ThankYouPage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => CameraButton()),
                 );
               },
-              child: Text('Back to Home'),
+              child: Icon(Icons.home, color: Colors.black54, size: 35),
+              style: ElevatedButton.styleFrom(
+                shape: CircleBorder(),
+                padding: EdgeInsets.all(25),
+                side: BorderSide(color: Color(0xff1E1E1E), width: 10),
+                backgroundColor: Colors.white60,
+                foregroundColor: Colors.orange,
+              ),
             ),
           ],
         ),

@@ -3,6 +3,7 @@ import 'package:camera/camera.dart'; // Import the camera package
 import 'camerascreen.dart';
 import 'nextpage.dart';
 
+
 class CameraButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
