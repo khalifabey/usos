@@ -49,6 +49,32 @@ class _CameraScreenState extends State<CameraScreen>
 
   ResolutionPreset currentResolutionPreset = ResolutionPreset.medium;
 
+
+  Future<void> takeAndDisplayPicture() async {
+    XFile? rawImage = await takePicture();
+    File imageFile = File(rawImage!.path);
+
+    int currentUnix = DateTime.now().millisecondsSinceEpoch;
+
+    final directory = await getApplicationDocumentsDirectory();
+
+    String fileFormat = imageFile.path.split('.').last;
+
+    await imageFile.copy(
+      '${directory.path}/$currentUnix.$fileFormat',
+    );
+
+    String imagePath = '${directory.path}/$currentUnix.$fileFormat';
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DisplayPictureScreen(imagePath: imagePath),
+      ),
+    );
+  }
+
+
   getPermissionStatus() async {
     await Permission.camera.request();
     var status = await Permission.camera.status;
@@ -125,9 +151,16 @@ class _CameraScreenState extends State<CameraScreen>
       });
       await videoController!.setLooping(true);
       await videoController!.play();
+
+      // Navigate to DisplayPictureScreen when video playback starts
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DisplayPictureScreen(imagePath: _videoFile!.path),
+        ),
+      );
     }
   }
-
   Future<void> startVideoRecording() async {
     final CameraController? cameraController = controller;
 
@@ -327,60 +360,11 @@ class _CameraScreenState extends State<CameraScreen>
                   //     height: 150,
                   //   ),
                   // ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                      16.0,
-                      8.0,
-                      16.0,
-                      8.0,
-                    ),
+                  Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-
-                        // Spacer(),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              right: 8.0, top: 16.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                              BorderRadius.circular(10.0),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                _currentExposureOffset
-                                    .toStringAsFixed(1) +
-                                    'x',
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: RotatedBox(
-                            quarterTurns: 3,
-                            child: Container(
-                              height: 30,
-                              child: Slider(
-                                value: _currentExposureOffset,
-                                min: _minAvailableExposureOffset,
-                                max: _maxAvailableExposureOffset,
-                                activeColor: Colors.white,
-                                inactiveColor: Colors.white30,
-                                onChanged: (value) async {
-                                  setState(() {
-                                    _currentExposureOffset = value;
-                                  });
-                                  await controller!
-                                      .setExposureOffset(value);
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
+                        Spacer(), // Pushes the content to the bottom
                         Row(
                           children: [
                             Expanded(
@@ -394,129 +378,31 @@ class _CameraScreenState extends State<CameraScreen>
                                   setState(() {
                                     _currentZoomLevel = value;
                                   });
-                                  await controller!
-                                      .setZoomLevel(value);
+                                  await controller!.setZoomLevel(value);
                                 },
                               ),
                             ),
                             Padding(
-                              padding:
-                              const EdgeInsets.only(right: 8.0),
+                              padding: const EdgeInsets.only(right: 8.0),
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: Colors.black87,
-                                  borderRadius:
-                                  BorderRadius.circular(10.0),
+                                  borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
-                                    _currentZoomLevel
-                                        .toStringAsFixed(1) +
-                                        'x',
-                                    style: TextStyle(
-                                        color: Colors.white),
+                                    _currentZoomLevel.toStringAsFixed(1) + 'x',
+                                    style: TextStyle(color: Colors.white),
                                   ),
                                 ),
                               ),
                             ),
                           ],
                         ),
-                        Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
-                          children: [
-
-                            InkWell(
-                              onTap: _isVideoCameraSelected
-                                  ? () async {
-                                if (_isRecordingInProgress) {
-                                  XFile? rawVideo =
-                                  await stopVideoRecording();
-                                  File videoFile =
-                                  File(rawVideo!.path);
-
-                                  int currentUnix = DateTime
-                                      .now()
-                                      .millisecondsSinceEpoch;
-
-                                  final directory =
-                                  await getApplicationDocumentsDirectory();
-
-                                  String fileFormat = videoFile
-                                      .path
-                                      .split('.')
-                                      .last;
-
-                                  _videoFile =
-                                  await videoFile.copy(
-                                    '${directory.path}/$currentUnix.$fileFormat',
-                                  );
-
-                                  _startVideoPlayer();
-                                } else {
-                                  await startVideoRecording();
-                                }
-                              }
-                                  : () async {
-                                XFile? rawImage =
-                                await takePicture();
-                                File imageFile =
-                                File(rawImage!.path);
-
-                                int currentUnix = DateTime.now()
-                                    .millisecondsSinceEpoch;
-
-                                final directory =
-                                await getApplicationDocumentsDirectory();
-
-                                String fileFormat = imageFile
-                                    .path
-                                    .split('.')
-                                    .last;
-
-                                print(fileFormat);
-
-                                await imageFile.copy(
-                                  '${directory.path}/$currentUnix.$fileFormat',
-                                );
-
-                                refreshAlreadyCapturedImages();
-                              },
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.circle,
-                                    color: _isVideoCameraSelected
-                                        ? Colors.white
-                                        : Colors.white38,
-                                    size: 80,
-                                  ),
-                                  Icon(
-                                    Icons.circle,
-                                    color: _isVideoCameraSelected
-                                        ? Colors.red
-                                        : Colors.white,
-                                    size: 65,
-                                  ),
-                                  _isVideoCameraSelected &&
-                                      _isRecordingInProgress
-                                      ? Icon(
-                                    Icons.stop_rounded,
-                                    color: Colors.white,
-                                    size: 32,
-                                  )
-                                      : Container(),
-                                ],
-                              ),
-                            ),
-
-                          ],
-                        ),
                       ],
                     ),
-                  ),
+                  )
                 ],
               ),
             ),
@@ -663,28 +549,62 @@ class _CameraScreenState extends State<CameraScreen>
                       ),
 
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          InkWell(
-                            onTap: _isVideoCameraSelected
-                                ? null
-                                : () async {
-                              // ... Take picture logic ...
-                            },
-                            child: Icon(
-                              Icons.camera_alt,
-                              color: _isVideoCameraSelected
-                                  ? Colors.white38
-                                  : Colors.white,
-                              size: 40, // Adjust the size as needed
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            InkWell(
+                              onTap: /* _isVideoCameraSelected
+                                  ? () async {
+                                if (_isRecordingInProgress) {
+                                  XFile? rawVideo = await stopVideoRecording();
+                                  File videoFile = File(rawVideo!.path);
+
+                                  int currentUnix = DateTime.now().millisecondsSinceEpoch;
+
+                                  final directory = await getApplicationDocumentsDirectory();
+
+                                  String fileFormat = videoFile.path.split('.').last;
+
+                                  _videoFile = await videoFile.copy(
+                                    '${directory.path}/$currentUnix.$fileFormat',
+                                  );
+
+                                  _startVideoPlayer();
+                                } else {
+                                  await startVideoRecording();
+                                }
+                              }*/
+                                   takeAndDisplayPicture,
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.circle,
+                                    color: _isVideoCameraSelected ? Colors.white : Colors.white38,
+                                    size: 80,
+                                  ),
+                                  Icon(
+                                    Icons.circle,
+                                    color: _isVideoCameraSelected ? Colors.red : Colors.white,
+                                    size: 65,
+                                  ),
+                                  _isVideoCameraSelected && _isRecordingInProgress
+                                      ? Icon(
+                                    Icons.stop_rounded,
+                                    color: Colors.white,
+                                    size: 32,
+                                  )
+                                      : Container(),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),
