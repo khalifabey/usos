@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:usos/camerascreen.dart';
 import 'package:usos/kiribis.dart';
 import 'DisplayPictureScreen.dart';
 import 'floatscreen.dart'; // Import the FloatingScreen class
@@ -14,10 +16,18 @@ Future<void> main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
     cameras = await availableCameras();
+    // Request GPS location permission
+    final status = await Permission.location.request();
+    if (status.isGranted) {
+      runApp(FigmaToCodeApp());
+    } else {
+      // Handle the case where permission is denied
+      print('GPS location permission denied');
+      // You can display an error message or exit the app gracefully.
+    }
   } on CameraException catch (e) {
     print('Error in fetching the cameras: $e');
   }
-  runApp(FigmaToCodeApp());
 }
 
 class FigmaToCodeApp extends StatelessWidget {
@@ -28,7 +38,7 @@ class FigmaToCodeApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color.fromARGB(0, 30, 30, 30),
       ),
       debugShowCheckedModeBanner: false,
-      home: kribis(),
+      home: CameraScreen(),
     );
   }
 }

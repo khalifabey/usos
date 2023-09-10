@@ -151,14 +151,6 @@ class _CameraScreenState extends State<CameraScreen>
       });
       await videoController!.setLooping(true);
       await videoController!.play();
-
-      // Navigate to DisplayPictureScreen when video playback starts
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => DisplayPictureScreen(imagePath: _videoFile!.path),
-        ),
-      );
     }
   }
   Future<void> startVideoRecording() async {
