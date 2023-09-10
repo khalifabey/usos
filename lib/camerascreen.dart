@@ -478,62 +478,7 @@ class _CameraScreenState extends State<CameraScreen>
                 ],
               ),
             ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    InkWell(
-                      onTap: /* _isVideoCameraSelected
-                                  ? () async {
-                                if (_isRecordingInProgress) {
-                                  XFile? rawVideo = await stopVideoRecording();
-                                  File videoFile = File(rawVideo!.path);
 
-                                  int currentUnix = DateTime.now().millisecondsSinceEpoch;
-
-                                  final directory = await getApplicationDocumentsDirectory();
-
-                                  String fileFormat = videoFile.path.split('.').last;
-
-                                  _videoFile = await videoFile.copy(
-                                    '${directory.path}/$currentUnix.$fileFormat',
-                                  );
-
-                                  _startVideoPlayer();
-                                } else {
-                                  await startVideoRecording();
-                                }
-                              }*/
-                      takeAndDisplayPicture,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Icon(
-                            Icons.circle,
-                            color: _isVideoCameraSelected ? Colors.white : Colors.white38,
-                            size: 80,
-                          ),
-                          Icon(
-                            Icons.circle,
-                            color: _isVideoCameraSelected ? Colors.red : Colors.white,
-                            size: 65,
-                          ),
-                          _isVideoCameraSelected && _isRecordingInProgress
-                              ? Icon(
-                            Icons.stop_rounded,
-                            color: Colors.white,
-                            size: 32,
-                          )
-                              : Container(),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
             Expanded(
               child: SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
@@ -568,6 +513,62 @@ class _CameraScreenState extends State<CameraScreen>
                                       : Colors.white,
                                 ),
                                 child: Text('IMAGE'),
+                              ),
+                            ),
+                          ),
+                          Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  InkWell(
+                                    onTap: /* _isVideoCameraSelected
+                                  ? () async {
+                                if (_isRecordingInProgress) {
+                                  XFile? rawVideo = await stopVideoRecording();
+                                  File videoFile = File(rawVideo!.path);
+
+                                  int currentUnix = DateTime.now().millisecondsSinceEpoch;
+
+                                  final directory = await getApplicationDocumentsDirectory();
+
+                                  String fileFormat = videoFile.path.split('.').last;
+
+                                  _videoFile = await videoFile.copy(
+                                    '${directory.path}/$currentUnix.$fileFormat',
+                                  );
+
+                                  _startVideoPlayer();
+                                } else {
+                                  await startVideoRecording();
+                                }
+                              }*/
+                                    takeAndDisplayPicture,
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.circle,
+                                          color: _isVideoCameraSelected ? Colors.white : Colors.white38,
+                                          size: 80,
+                                        ),
+                                        Icon(
+                                          Icons.circle,
+                                          color: _isVideoCameraSelected ? Colors.red : Colors.white,
+                                          size: 65,
+                                        ),
+                                        _isVideoCameraSelected && _isRecordingInProgress
+                                            ? Icon(
+                                          Icons.stop_rounded,
+                                          color: Colors.white,
+                                          size: 32,
+                                        )
+                                            : Container(),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
