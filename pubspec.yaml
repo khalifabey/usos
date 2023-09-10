@@ -33,6 +33,7 @@ dependencies:
   camera: ^0.10.0
   geolocator: ^7.6.2  # Add the geolocator package here
   geocoding: ^2.0.0
+  location: ^5.0.0
 
 
   # The following adds the Cupertino Icons font to your application.

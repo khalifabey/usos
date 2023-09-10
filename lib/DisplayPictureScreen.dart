@@ -1,9 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 import 'package:usos/thankyou.dart';
 import 'camerascreen.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class DisplayPictureScreen extends StatefulWidget {
   final String imagePath;
@@ -16,43 +15,44 @@ class DisplayPictureScreen extends StatefulWidget {
 
 class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
   String adresse = '';
-  final currentDate =  DateTime.now();
+  final currentDate = DateTime.now();
+  LocationData? _locationData;
 
   @override
   void initState() {
     super.initState();
     getCurrentLocation();
-
   }
 
   Future<void> getCurrentLocation() async {
-    final status = await Permission.location.request();
+    Location location = new Location();
 
-    if (status.isGranted) {
-      try {
-        Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high,
-        );
-        double latitude = position.latitude;
-        double longitude = position.longitude;
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
 
-        String location = 'Latitude: $latitude, Longitude: $longitude';
-
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        // Location service is still not enabled.
         setState(() {
-          adresse = location;
+          adresse = 'GPS service is disabled.';
         });
-      } catch (e) {
-        String errorAdresse = 'Location not available';
-        setState(() {
-          adresse = errorAdresse;
-        });
+        return;
       }
-    } else {
-      // Handle the case where the user denies permission
-      setState(() {
-        adresse = 'Permission denied for accessing location.';
-      });
     }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    _locationData = await location.getLocation();
+    print("Location Data: $_locationData");
+
   }
 
   @override
@@ -145,12 +145,13 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
                         ),
                         TextSpan(
                           text: "\nADRESSE:",
-                          style: TextStyle(fontSize: 15,color: Color(0xffaacc00)),
+                          style: TextStyle(fontSize: 15, color: Color(0xffaacc00)),
                         ),
                         TextSpan(
-                          text: "$adresse \n",
-                          style: TextStyle(color: Colors.white,
-                          ),
+                          text: _locationData != null
+                              ? "Latitude: ${_locationData!.latitude}, Longitude: ${_locationData!.longitude} \n"
+                              : "Location not available \n",
+                          style: TextStyle(color: Colors.white),
                         ),
                         // You can add more TextSpan widgets for additional words.
                       ],

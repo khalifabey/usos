@@ -29,7 +29,7 @@ class FigmaToCodeApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color.fromARGB(0, 30, 30, 30),
       ),
       debugShowCheckedModeBanner: false,
-      home: CameraScreen(),
+      home: DisplayPictureScreen(imagePath: '',),
     );
   }
 }
