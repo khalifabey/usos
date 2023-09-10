@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:usos/camerascreen.dart';
 import 'package:usos/kiribis.dart';
 import 'DisplayPictureScreen.dart';
@@ -16,18 +15,10 @@ Future<void> main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
     cameras = await availableCameras();
-    // Request GPS location permission
-    final status = await Permission.location.request();
-    if (status.isGranted) {
-      runApp(FigmaToCodeApp());
-    } else {
-      // Handle the case where permission is denied
-      print('GPS location permission denied');
-      // You can display an error message or exit the app gracefully.
-    }
   } on CameraException catch (e) {
     print('Error in fetching the cameras: $e');
   }
+  runApp(FigmaToCodeApp());
 }
 
 class FigmaToCodeApp extends StatelessWidget {
