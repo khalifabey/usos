@@ -87,9 +87,30 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
             ),
             height: 300,
             width: 350,
-            child: Image.file(
-              File(widget.imagePath),
-              fit: BoxFit.cover,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Color(0xFFAACC00),
+                borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              ),
+              height: 150,
+              width: 175,
+              padding: EdgeInsets.symmetric(vertical: 0),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Color(0xFFAACC00), // Color of the border
+                    width: 2.0, // Width of the border
+                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(18.0)), // Adjust the border radius as needed
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(18.0)), // Match the border radius
+                  child: Image.file(
+                    File(widget.imagePath),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
             ),
           ),
           SizedBox(height: 30),
