@@ -130,7 +130,32 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
               children: [
                 Padding(
                   padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
-                  child: Text("DATE:\n$currentDate\nADRESSE:\n$adresse"),
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        // First word with red color
+                        TextSpan(
+                          text: "DATE:",
+                          style: TextStyle(fontSize: 15,color: Color(0xffaacc00)),
+                        ),
+                        TextSpan(
+                          text: "$currentDate \n",
+                          style: TextStyle(color: Colors.white,
+                        ),
+                        ),
+                        TextSpan(
+                          text: "\nADRESSE:",
+                          style: TextStyle(fontSize: 15,color: Color(0xffaacc00)),
+                        ),
+                        TextSpan(
+                          text: "$adresse \n",
+                          style: TextStyle(color: Colors.white,
+                          ),
+                        ),
+                        // You can add more TextSpan widgets for additional words.
+                      ],
+                    ),
+                  ),
                 ),
                 Align(
                   alignment: Alignment.bottomCenter,
