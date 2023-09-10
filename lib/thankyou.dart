@@ -26,12 +26,12 @@ class ThankYouPage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => CameraButton()),
                 );
               },
-              child: Icon(Icons.home, color: Colors.black54, size: 35),
+              child: Icon(Icons.home_outlined, color: Colors.orange, size: 35),
               style: ElevatedButton.styleFrom(
                 shape: CircleBorder(),
                 padding: EdgeInsets.all(25),
-                side: BorderSide(color: Color(0xff1E1E1E), width: 10),
-                backgroundColor: Colors.white60,
+                side: BorderSide(color: Colors.orange, width: 2),
+                backgroundColor:  Colors.black54,
                 foregroundColor: Colors.orange,
               ),
             ),

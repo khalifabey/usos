@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:usos/thankyou.dart';
 import 'camerascreen.dart';
 import 'nextpage.dart'; // Import the next page class
 
@@ -112,7 +113,7 @@ class DisplayPictureScreen extends StatelessWidget {
                   onPressed: () {
                    Navigator.push(
                    context,
-                     MaterialPageRoute(builder: (context) => NextPage()),
+                     MaterialPageRoute(builder: (context) => ThankYouPage()),
               );
 
             },

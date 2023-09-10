@@ -104,12 +104,12 @@ class CameraButton extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => NextPage()),
                   );
                 },
-                child: Icon(Icons.camera_alt, color: Colors.black54, size: 35),
+                child: Icon(Icons.camera_alt_outlined, color: Colors.orange, size: 35),
                 style: ElevatedButton.styleFrom(
                   shape: CircleBorder(),
                   padding: EdgeInsets.all(25),
-                  side: BorderSide(color: Color(0xff1E1E1E), width: 10),
-                  backgroundColor: Colors.white60,
+                  side: BorderSide(color: Colors.orange, width: 2),
+                  backgroundColor:  Colors.black54,
                   foregroundColor: Colors.orange,
                 ),
 
