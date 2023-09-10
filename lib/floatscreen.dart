@@ -32,6 +32,7 @@ class _FloatingScreenState extends State<FloatingScreen> {
            child: Image.asset('lib/assets/yousos.png'),
          )
       )
+
    );
   }
 }
