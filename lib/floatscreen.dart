@@ -27,8 +27,8 @@ class _FloatingScreenState extends State<FloatingScreen> {
       backgroundColor: Color(0xFFAACC00),
       body: Center(
         child: Container(
-          width: 150,
-          height: 60,
+          width: 140,
+          height: 50,
            child: Image.asset('lib/assets/yousos.png'),
          )
       )

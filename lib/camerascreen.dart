@@ -47,7 +47,7 @@ class _CameraScreenState extends State<CameraScreen>
 
   final resolutionPresets = ResolutionPreset.values;
 
-  ResolutionPreset currentResolutionPreset = ResolutionPreset.medium;
+  ResolutionPreset currentResolutionPreset = ResolutionPreset.max;
 
 
   Future<void> takeAndDisplayPicture() async {
@@ -327,6 +327,7 @@ class _CameraScreenState extends State<CameraScreen>
              _isCameraInitialized
             ? Column(
           children: [
+
             AspectRatio(
               aspectRatio: 1 / controller!.value.aspectRatio,
               child: Stack(
@@ -352,6 +353,85 @@ class _CameraScreenState extends State<CameraScreen>
                   //     height: 150,
                   //   ),
                   // ),
+                  Padding(
+                    padding:
+                    const EdgeInsets.fromLTRB(16.0, 20.0, 16.0, 8.0),
+                    child: Row(
+                      mainAxisAlignment:
+                      MainAxisAlignment.spaceBetween,
+                      children: [
+                        InkWell(
+                          onTap: () async {
+                            setState(() {
+                              _currentFlashMode = FlashMode.off;
+                            });
+                            await controller!.setFlashMode(
+                              FlashMode.off,
+                            );
+                          },
+                          child: Icon(
+                            Icons.flash_off,
+                            color:
+                            _currentFlashMode == FlashMode.off
+                                ? Colors.amber
+                                : Colors.white,
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () async {
+                            setState(() {
+                              _currentFlashMode = FlashMode.auto;
+                            });
+                            await controller!.setFlashMode(
+                              FlashMode.auto,
+                            );
+                          },
+                          child: Icon(
+                            Icons.flash_auto,
+                            color:
+                            _currentFlashMode == FlashMode.auto
+                                ? Colors.amber
+                                : Colors.white,
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () async {
+                            setState(() {
+                              _currentFlashMode = FlashMode.always;
+                            });
+                            await controller!.setFlashMode(
+                              FlashMode.always,
+                            );
+                          },
+                          child: Icon(
+                            Icons.flash_on,
+                            color: _currentFlashMode ==
+                                FlashMode.always
+                                ? Colors.amber
+                                : Colors.white,
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () async {
+                            setState(() {
+                              _currentFlashMode = FlashMode.torch;
+                            });
+                            await controller!.setFlashMode(
+                              FlashMode.torch,
+                            );
+                          },
+                          child: Icon(
+                            Icons.highlight,
+                            color:
+                            _currentFlashMode == FlashMode.torch
+                                ? Colors.amber
+                                : Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                  ),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
@@ -398,13 +478,69 @@ class _CameraScreenState extends State<CameraScreen>
                 ],
               ),
             ),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    InkWell(
+                      onTap: /* _isVideoCameraSelected
+                                  ? () async {
+                                if (_isRecordingInProgress) {
+                                  XFile? rawVideo = await stopVideoRecording();
+                                  File videoFile = File(rawVideo!.path);
+
+                                  int currentUnix = DateTime.now().millisecondsSinceEpoch;
+
+                                  final directory = await getApplicationDocumentsDirectory();
+
+                                  String fileFormat = videoFile.path.split('.').last;
+
+                                  _videoFile = await videoFile.copy(
+                                    '${directory.path}/$currentUnix.$fileFormat',
+                                  );
+
+                                  _startVideoPlayer();
+                                } else {
+                                  await startVideoRecording();
+                                }
+                              }*/
+                      takeAndDisplayPicture,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Icon(
+                            Icons.circle,
+                            color: _isVideoCameraSelected ? Colors.white : Colors.white38,
+                            size: 80,
+                          ),
+                          Icon(
+                            Icons.circle,
+                            color: _isVideoCameraSelected ? Colors.red : Colors.white,
+                            size: 65,
+                          ),
+                          _isVideoCameraSelected && _isRecordingInProgress
+                              ? Icon(
+                            Icons.stop_rounded,
+                            color: Colors.white,
+                            size: 32,
+                          )
+                              : Container(),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             Expanded(
               child: SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
+                      padding: const EdgeInsets.only(top: 0.0),
                       child: Row(
                         children: [
                           Expanded(
@@ -462,141 +598,8 @@ class _CameraScreenState extends State<CameraScreen>
                         ],
                       ),
                     ),
-                    Padding(
-                      padding:
-                      const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-                      child: Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                            onTap: () async {
-                              setState(() {
-                                _currentFlashMode = FlashMode.off;
-                              });
-                              await controller!.setFlashMode(
-                                FlashMode.off,
-                              );
-                            },
-                            child: Icon(
-                              Icons.flash_off,
-                              color:
-                              _currentFlashMode == FlashMode.off
-                                  ? Colors.amber
-                                  : Colors.white,
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () async {
-                              setState(() {
-                                _currentFlashMode = FlashMode.auto;
-                              });
-                              await controller!.setFlashMode(
-                                FlashMode.auto,
-                              );
-                            },
-                            child: Icon(
-                              Icons.flash_auto,
-                              color:
-                              _currentFlashMode == FlashMode.auto
-                                  ? Colors.amber
-                                  : Colors.white,
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () async {
-                              setState(() {
-                                _currentFlashMode = FlashMode.always;
-                              });
-                              await controller!.setFlashMode(
-                                FlashMode.always,
-                              );
-                            },
-                            child: Icon(
-                              Icons.flash_on,
-                              color: _currentFlashMode ==
-                                  FlashMode.always
-                                  ? Colors.amber
-                                  : Colors.white,
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () async {
-                              setState(() {
-                                _currentFlashMode = FlashMode.torch;
-                              });
-                              await controller!.setFlashMode(
-                                FlashMode.torch,
-                              );
-                            },
-                            child: Icon(
-                              Icons.highlight,
-                              color:
-                              _currentFlashMode == FlashMode.torch
-                                  ? Colors.amber
-                                  : Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
 
-                    ),
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            InkWell(
-                              onTap: /* _isVideoCameraSelected
-                                  ? () async {
-                                if (_isRecordingInProgress) {
-                                  XFile? rawVideo = await stopVideoRecording();
-                                  File videoFile = File(rawVideo!.path);
 
-                                  int currentUnix = DateTime.now().millisecondsSinceEpoch;
-
-                                  final directory = await getApplicationDocumentsDirectory();
-
-                                  String fileFormat = videoFile.path.split('.').last;
-
-                                  _videoFile = await videoFile.copy(
-                                    '${directory.path}/$currentUnix.$fileFormat',
-                                  );
-
-                                  _startVideoPlayer();
-                                } else {
-                                  await startVideoRecording();
-                                }
-                              }*/
-                                   takeAndDisplayPicture,
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.circle,
-                                    color: _isVideoCameraSelected ? Colors.white : Colors.white38,
-                                    size: 80,
-                                  ),
-                                  Icon(
-                                    Icons.circle,
-                                    color: _isVideoCameraSelected ? Colors.red : Colors.white,
-                                    size: 65,
-                                  ),
-                                  _isVideoCameraSelected && _isRecordingInProgress
-                                      ? Icon(
-                                    Icons.stop_rounded,
-                                    color: Colors.white,
-                                    size: 32,
-                                  )
-                                      : Container(),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
                   ],
                 ),
               ),
