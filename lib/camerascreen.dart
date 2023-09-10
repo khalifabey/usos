@@ -485,7 +485,7 @@ class _CameraScreenState extends State<CameraScreen>
                 child: Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 0.0),
+                      padding: const EdgeInsets.only(top: 30.0),
                       child: Row(
                         children: [
                           Expanded(
