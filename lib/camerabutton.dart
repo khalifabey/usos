@@ -13,10 +13,12 @@ class CameraButton extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color(0xff1E1E1E),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+       // mainAxisAlignment: MainAxisAlignment.center,
+       // crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
+           Align(
+          alignment: Alignment.topRight,
+             child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(bottomLeft: Radius.circular(100)),
               color: Color(0x7faacc00),
@@ -31,8 +33,8 @@ class CameraButton extends StatelessWidget {
                   alignment: Alignment(-1.0, -0.3),
                   child: Image.asset(
                     'lib/assets/pq.png',
-                    height: screenHeight * 0.18,
-                    width: screenHeight * 0.18,
+                    height: screenHeight * 0.15,
+                    width: screenHeight * 0.15,
                   ),
                 ),
                 Padding(
@@ -49,6 +51,7 @@ class CameraButton extends StatelessWidget {
               ],
             ),
           ),
+           ),
           SizedBox(height: screenHeight * 0.03),
           Container(
             decoration: BoxDecoration(
@@ -95,7 +98,7 @@ class CameraButton extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: screenHeight * 0.03),
+          SizedBox(height: screenHeight * 0.04),
           Container(
             decoration: BoxDecoration(
               color: Color(0xFFAACC00),

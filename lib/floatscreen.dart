@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'camerabutton.dart'; // Import your CameraButton class
-import 'package:camera/camera.dart'; // Import the camera package
-import 'package:flutter_svg/flutter_svg.dart';
+
 
 class FloatingScreen extends StatefulWidget {
   @override
